@@ -52,7 +52,7 @@ class WithdrawWorker():
         from_address = self.jobcointransferinfo.jobcoinmixinfo.deposit_address
         dest_addresses = self.jobcointransferinfo.jobcoinmixinfo.destination_addresses
 
-        fee_info = self.fee_calculator.getTransferFeeInfo(self.jobcointransferinfo)
+        fee_info = self.fee_calculator.get_transfer_fee_info(self.jobcointransferinfo)
         fee_amount = fee_info.amount if fee_info else 0.0
 
         #Total amount to be transferred after fees deducted

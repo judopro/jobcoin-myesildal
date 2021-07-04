@@ -16,7 +16,7 @@ def test_no_fee_for_internal_transfer():
 
     txinfo = JobCoinTransferInfo(mixinfo, 6.25, TransferType.INTERNAL)
 
-    fee = FeeCalculator().getTransferFeeInfo(txinfo)
+    fee = FeeCalculator().get_transfer_fee_info(txinfo)
 
     assert fee is None
 
@@ -32,6 +32,6 @@ def test_fee_calculated_for_user_transfer():
     amount = 10.00
     txinfo = JobCoinTransferInfo(mixinfo, amount, TransferType.USER)
 
-    fee = FeeCalculator().getTransferFeeInfo(txinfo)
+    fee = FeeCalculator().get_transfer_fee_info(txinfo)
 
     assert fee.amount == (amount * TX_FEE_PERCENTAGE)

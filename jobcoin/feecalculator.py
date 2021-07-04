@@ -17,7 +17,7 @@ class FeeCalculator():
     In the future we can have different transaction fee percentages based on 
     30 day transaction volume of sender addresses etc...
     """
-    def getTransferFeeInfo(self, transfer_info):
+    def get_transfer_fee_info(self, transfer_info):
         if transfer_info.type == TransferType.INTERNAL:
             return None
         
