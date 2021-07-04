@@ -52,7 +52,7 @@ class DepositWatchWorker():
     def watch_for_deposit(self):        
         tries = 0
         while (tries*API_POLL_TIME_SEC <= MAX_WAIT_TIME_FOR_DEPOSITS_SEC):
-            transactions = self.proxy.getAddressTransactions(self.jobcoinmixinfo.deposit_address)
+            transactions = self.proxy.get_transactions_for_address(self.jobcoinmixinfo.deposit_address)
             current_tx = list(filter(lambda x: x["toAddress"] == self.jobcoinmixinfo.deposit_address, transactions))
             
             if len(current_tx) > 0:

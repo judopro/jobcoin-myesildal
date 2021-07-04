@@ -11,10 +11,10 @@ class JobCoinApiProxyImpl():
     def __init__(self, hostname):
         self.hostname = hostname
         
-    def getAddressTransactions(self, address):
+    def get_transactions_for_address(self, address):
         raise NotImplementedError()
 
-    def sendAmount(self, fromAddress, toAddress, amount):
+    def send_amount(self, fromAddress, toAddress, amount):
         raise NotImplementedError()
 
 
@@ -29,13 +29,13 @@ class JobCoinApiProxyProduction(JobCoinApiProxyImpl):
     Make a query to the api server 
     and return a list of transactions and balance info for the address
     """    
-    def getAddressTransactions(self, address):
+    def get_transactions_for_address(self, address):
         url = "{}/addresses/{}".format(self.hostname, address)
         r = requests.get(url)
         return r.json()["transactions"]
 
 
-    def sendAmount(self, fromAddress, toAddress, amount):
+    def send_amount(self, fromAddress, toAddress, amount):
         
         url = "{}/transactions".format(self.hostname)
 
@@ -60,18 +60,18 @@ An implementation of above ProxyImpl as a Mock OBject for using with unit tests
 class JobCoinApiProxyMock(JobCoinApiProxyImpl):
     """
     returnTransaction is a boolean flag to control
-    in getAddressTransactions whether to return transactions for that address or not.
+    in get_transactions_for_address whether to return transactions for that address or not.
     For some test cases, we set it to NO to check graceful failure.
     """
-    def __init__(self, hostname, successGetTransaction=True, successSendAmount=True):
+    def __init__(self, hostname, successGetTransaction=True, successsend_amount=True):
         super().__init__(hostname)
         self.successGetTransaction = successGetTransaction
-        self.successSendAmount = successSendAmount
+        self.successsend_amount = successsend_amount
 
     """
     Return a predetermined set of transactions for unit test cases
     """
-    def getAddressTransactions(self, address):
+    def get_transactions_for_address(self, address):
 
         if not self.successGetTransaction:
             return []
@@ -84,8 +84,8 @@ class JobCoinApiProxyMock(JobCoinApiProxyImpl):
         ]
         return tx
 
-    def sendAmount(self, fromAddress, toAddress, amount):
-        if not self.successSendAmount:
+    def send_amount(self, fromAddress, toAddress, amount):
+        if not self.successsend_amount:
             raise ValueError(MESSAGE_INSUFFICIENT_FUNDS)
 
         return True

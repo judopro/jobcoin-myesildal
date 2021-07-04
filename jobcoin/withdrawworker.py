@@ -69,17 +69,17 @@ class WithdrawWorker():
             rem_amount -= amount
             #transfer the amount
             try:
-                self.proxy.sendAmount(from_address, dest_addresses[i], amount)
+                self.proxy.send_amount(from_address, dest_addresses[i], amount)
             except ValueError:
                 raise ValueError(MESSAGE_INSUFFICIENT_FUNDS)
 
         #Finally transfer the remaining amount to last destination address
         if rem_amount > 0:
-            self.proxy.sendAmount(from_address, dest_addresses[-1], rem_amount)
+            self.proxy.send_amount(from_address, dest_addresses[-1], rem_amount)
 
         # Charge fees if there is one to apply
         if fee_info is not None and fee_amount > 0:
-            self.proxy.sendAmount(fee_info.jobcoinmixinfo.deposit_address, fee_info.jobcoinmixinfo.destination_addresses[0], fee_amount)
+            self.proxy.send_amount(fee_info.jobcoinmixinfo.deposit_address, fee_info.jobcoinmixinfo.destination_addresses[0], fee_amount)
 
         exit(0)
         

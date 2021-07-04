@@ -48,13 +48,13 @@ def test_mixing_to_single_address():
     
     proxy = JobCoinApiProxyProduction(API_BASE_URL)
 
-    proxy.sendAmount(fromAddress, deposit_address, amount)
+    proxy.send_amount(fromAddress, deposit_address, amount)
 
     #logging.getLogger().log(logging.DEBUG,"Sleeping for 5 seconds...Waiting for transaction to be read")
     print("Sleeping for 5 seconds...Waiting for transaction to be read")
     time.sleep(5)
     
-    transactions = proxy.getAddressTransactions(deposit_address)
+    transactions = proxy.get_transactions_for_address(deposit_address)
     current_tx = list(filter(lambda x: x["toAddress"] == deposit_address, transactions))
     assert len(current_tx) > 0
 
@@ -62,14 +62,14 @@ def test_mixing_to_single_address():
     print("Sleeping for 5 seconds...Waiting for final transaction")
     time.sleep(5)
 
-    transactions = proxy.getAddressTransactions(destination_addresses[0])
+    transactions = proxy.get_transactions_for_address(destination_addresses[0])
     current_tx = list(filter(lambda x: x["toAddress"] == destination_addresses[0], transactions))
     assert len(current_tx) > 0
 
     ttl_transferred = float(current_tx[0]["amount"])
 
     fee_amount = amount * TX_FEE_PERCENTAGE
-    transactions = proxy.getAddressTransactions(FEE_ADDRESS)
+    transactions = proxy.get_transactions_for_address(FEE_ADDRESS)
     fee_tx = list(filter(lambda x: x["toAddress"] == FEE_ADDRESS and float(x["amount"]) == fee_amount, transactions))
     assert len(fee_tx) > 0
 
@@ -114,13 +114,13 @@ def test_mixing_to_two_addresses():
     
     proxy = JobCoinApiProxyProduction(API_BASE_URL)
 
-    proxy.sendAmount(fromAddress, deposit_address, amount)
+    proxy.send_amount(fromAddress, deposit_address, amount)
 
     #logging.getLogger().log(logging.DEBUG,"Sleeping for 5 seconds...Waiting for transaction to be read")
     print("Sleeping for 5 seconds...Waiting for transaction to be read")
     time.sleep(5)
     
-    transactions = proxy.getAddressTransactions(deposit_address)
+    transactions = proxy.get_transactions_for_address(deposit_address)
     current_tx = list(filter(lambda x: x["toAddress"] == deposit_address, transactions))
     assert len(current_tx) > 0
 
@@ -130,14 +130,14 @@ def test_mixing_to_two_addresses():
 
     ttl_transferred = 0.0
     for i in range(2):
-        transactions = proxy.getAddressTransactions(destination_addresses[i])
+        transactions = proxy.get_transactions_for_address(destination_addresses[i])
         current_tx = list(filter(lambda x: x["toAddress"] == destination_addresses[i], transactions))
         ttl_transferred += float(current_tx[0]["amount"])
         assert len(current_tx) > 0
 
 
     fee_amount = amount * TX_FEE_PERCENTAGE
-    transactions = proxy.getAddressTransactions(FEE_ADDRESS)
+    transactions = proxy.get_transactions_for_address(FEE_ADDRESS)
     fee_tx = list(filter(lambda x: x["toAddress"] == FEE_ADDRESS and float(x["amount"]) == fee_amount, transactions))
     assert len(fee_tx) > 0
 
